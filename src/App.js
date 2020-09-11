@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn, AmplifyConfirmSignUp, AmplifySignOut } from '@aws-amplify/ui-react';
+import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn, AmplifyConfirmSignUp, AmplifySignOut, AmplifyForgotPassword, AmplifyRequireNewPassword } from '@aws-amplify/ui-react';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AppWrapper from './AppWrapper.js'
@@ -28,6 +28,10 @@ const App = () => {
     <AmplifyAuthenticator>
       <AmplifySignIn
         slot="sign-in"
+        usernameAlias="email"
+      />
+      <AmplifyForgotPassword
+        slot="forgot-password"
         usernameAlias="email"
       />
       <AmplifySignUp
