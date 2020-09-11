@@ -1,0 +1,11 @@
+type Task @model 
+  @auth( rules: [
+    { allow: owner },
+    { allow: groups, groups: ["admin"] }
+  ]) {
+  id: ID!
+  duration: String!
+  description: String!
+  owner: String
+  locked: String
+}
