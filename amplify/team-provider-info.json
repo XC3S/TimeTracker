@@ -13,7 +13,26 @@
     },
     "categories": {
       "auth": {
-        "offlineappd6f8c2e8": {}
+        "offlineappd6f8c2e8": {},
+        "userPoolGroups": {}
+      }
+    }
+  },
+  "newauth": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-offline-app-newauth-145749-authRole",
+      "UnauthRoleArn": "arn:aws:iam::405618765219:role/amplify-offline-app-newauth-145749-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::405618765219:role/amplify-offline-app-newauth-145749-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-offline-app-newauth-145749-deployment",
+      "UnauthRoleName": "amplify-offline-app-newauth-145749-unauthRole",
+      "StackName": "amplify-offline-app-newauth-145749",
+      "StackId": "arn:aws:cloudformation:eu-central-1:405618765219:stack/amplify-offline-app-newauth-145749/62370f70-f42e-11ea-9f1c-0a3417f4b6e8",
+      "AmplifyAppId": "d29mwd7pkbx779"
+    },
+    "categories": {
+      "auth": {
+        "offlineappf561cc9b": {}
       }
     }
   }

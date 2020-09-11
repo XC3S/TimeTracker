@@ -9,7 +9,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authofflineappd6f8c2e8"
+              "userPoolId": "authofflineappf561cc9b"
             }
           }
         }
@@ -17,7 +17,7 @@
     }
   },
   "auth": {
-    "offlineappd6f8c2e8": {
+    "offlineappf561cc9b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -29,7 +29,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "offlineappd6f8c2e8",
+          "resourceName": "offlineappf561cc9b",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",

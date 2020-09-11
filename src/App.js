@@ -19,27 +19,32 @@ const App = () => {
   }, []);
 
   
-return authState === AuthState.SignedIn && user ? (
+  return authState === AuthState.SignedIn && user ? (
     <div className="App">
         <AmplifySignOut />
-        <AppWrapper user={user}/>
+        <AppWrapper/>
     </div>
   ) : (
     <AmplifyAuthenticator>
       <AmplifySignIn
         slot="sign-in"
-        formFields={[
-          { type: "username" },
-          { type: "password" }
-        ]}
+        usernameAlias="email"
       />
       <AmplifySignUp
         slot="sign-up"
+        usernameAlias="email"
         formFields={[
-          { type: "username" },
-          { type: "email" },
-          { type: "password" }
-        ]}
+          {
+            type: "email",
+            label: "Email",
+            required: true,
+          },
+          {
+            type: "password",
+            label: "Password",
+            required: true,
+          }
+        ]} 
       />
       <AmplifyConfirmSignUp
         slot="confirm-sign-up"
@@ -49,7 +54,8 @@ return authState === AuthState.SignedIn && user ? (
             label: 'Email',
             placeholder: 'Type your email',
             required: true,
-          },{
+          },
+          {
             type: 'code',
             label: 'Code',
             placeholder: 'Type the confirmation code',
@@ -63,10 +69,12 @@ return authState === AuthState.SignedIn && user ? (
           },
       ]}
     />
-    </AmplifyAuthenticator>
-
-    
-);
+    </AmplifyAuthenticator>  
+  );
 }
 
 export default App;
+
+/*
+
+*/
