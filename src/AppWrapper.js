@@ -4,6 +4,10 @@ import { Auth } from 'aws-amplify';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { Task } from './models';
 
+import ChangePassword from './ChangePassword.js';
+import ChangeUserName from './ChangeUserName.js';
+
+
 class AppWrapper extends React.Component {
 
     constructor(props){
@@ -38,9 +42,6 @@ class AppWrapper extends React.Component {
                 })
 
                 var requireNameInput = !a.name;
-                console.log('[fetchUserAttributes]',attributes);
-                console.log('[mapped attributes]',a);
-                console.log('[ attributes.filter by name ]', attributes.filter(attr => attr.name));
                 this.setState({
                     userAttributes: a,
                     requireNameInput: requireNameInput,
@@ -68,9 +69,9 @@ class AppWrapper extends React.Component {
             id: entry.id,
             duration: entry.duration,
             description: entry.description,
-            owner: entry.owner
+            owner: entry.owner,
+            userName: entry.userName
         }));
-        console.log('[fetchTasks]',t);
 
         this.setState({ tasks: t })
     }
@@ -80,10 +81,16 @@ class AppWrapper extends React.Component {
 
         const task = new Task({
             duration: this.state.formDuration,
-            description: this.state.formDescription
-        })
+            description: this.state.formDescription,
+            userName: this.state.userAttributes.name
+        });
 
         await DataStore.save(task);
+
+        this.setState({
+            formDescription: '',
+            formDuration: ''
+        })
     }
 
     formFullNameSubmit = async(event) => {
@@ -91,7 +98,7 @@ class AppWrapper extends React.Component {
         event.preventDefault();
 
         const user = await Auth.currentAuthenticatedUser();
-
+        
         Auth.updateUserAttributes(user,{
             name: this.state.formFullName
         }).then(() => {
@@ -108,7 +115,7 @@ class AppWrapper extends React.Component {
                             <h2>Enter Name</h2>
                             <pre>requireNameInput: {this.state.requireNameInput + ''}</pre>
                             <label>Full Name</label><br/>
-                            <input type='text' value={this.state.formFullName} onChange={(e) => this.formChangeFullName(e)}/><br/><br/>
+                            <input type='text' placeholder='Max Musterman' value={this.state.formFullName} onChange={(e) => this.formChangeFullName(e)}/><br/><br/>
                             <button type="submit">Submit</button>
                         </form>
                     </div>
@@ -122,6 +129,11 @@ class AppWrapper extends React.Component {
 
                     <div><b>isAdmin:</b> { this.state.isAdmin + '' }</div>
                     <pre>requireNameInput: {this.state.requireNameInput + ''}</pre>
+                    <ChangePassword />
+                    <ChangeUserName name={ this.state.userAttributes.name } onSuccess={() => { 
+                        console.log('onSuccess');
+                        this.fetchUserAttributes();
+                    }}/>
 
                     <div style={{display: 'flex'}}>
                         <div style={{ flex: '0 0 50%'}}>
@@ -158,7 +170,7 @@ class AppWrapper extends React.Component {
                             </div>
                             {this.state.tasks.map((task,index) => {
                                 return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
-                                    <div style={{ flex: '0 0 350px'}}>{task.owner}</div>
+                                    <div style={{ flex: '0 0 350px'}}>{task.userName}</div>
                                     <div style={{ flex: '0 0 150px'}}>{task.duration}</div>
                                     <div style={{ flex: '1 1 auto'}}>{task.description}</div>
                                 </div>

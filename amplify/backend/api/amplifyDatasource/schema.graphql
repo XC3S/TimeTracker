@@ -6,6 +6,7 @@ type Task @model
   id: ID!
   duration: String!
   description: String!
+  userName: String
   owner: String
   locked: String
 }

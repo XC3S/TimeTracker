@@ -8,6 +8,7 @@ export declare class Task {
   readonly id: string;
   readonly duration: string;
   readonly description: string;
+  readonly userName?: string;
   readonly owner?: string;
   readonly locked?: string;
   constructor(init: ModelInit<Task>);
