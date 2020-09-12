@@ -7,6 +7,8 @@ import { Task } from './models';
 import ChangePassword from './ChangePassword.js';
 import ChangeUserName from './ChangeUserName.js';
 
+import moment from 'moment';
+import { Calendar, Input, Button, Row, Col } from 'antd';
 
 class AppWrapper extends React.Component {
 
@@ -20,7 +22,8 @@ class AppWrapper extends React.Component {
             tasks: [],
             requireNameInput: false,
             formFullName: '',
-            userAttributes: []
+            userAttributes: [],
+            date: moment('2017-01-25')
         };
     }
 
@@ -115,8 +118,8 @@ class AppWrapper extends React.Component {
                             <h2>Enter Name</h2>
                             <pre>requireNameInput: {this.state.requireNameInput + ''}</pre>
                             <label>Full Name</label><br/>
-                            <input type='text' placeholder='Max Musterman' value={this.state.formFullName} onChange={(e) => this.formChangeFullName(e)}/><br/><br/>
-                            <button type="submit">Submit</button>
+                            <Input type='text' placeholder='Max Musterman' value={this.state.formFullName} onChange={(e) => this.formChangeFullName(e)}/><br/><br/>
+                            <Button type="primary">Submit</Button>
                         </form>
                     </div>
                 </>
@@ -135,20 +138,23 @@ class AppWrapper extends React.Component {
                         this.fetchUserAttributes();
                     }}/>
 
-                    <div style={{display: 'flex'}}>
-                        <div style={{ flex: '0 0 50%'}}>
+
+                    <Calendar value={this.state.date} />
+
+                    <Row gutter={30}>
+                        <Col span={12}>
                             <h1>Task Form</h1>
                             <form onSubmit={(e) => this.formTaskSubmit(e)}>
                                 <label>Task Duration</label><br/>
-                                <input type='text' value={this.state.formDuration} onChange={(e) => this.formChangeDuration(e)}/><br/><br/>
+                                <Input type='text' value={this.state.formDuration} onChange={(e) => this.formChangeDuration(e)}/><br/><br/>
 
                                 <label>Task Description</label><br/>
-                                <input type='text' value={this.state.formDescription} onChange={(e) => this.formChangeDescription(e)}/><br/><br/>
+                                <Input type='text' value={this.state.formDescription} onChange={(e) => this.formChangeDescription(e)}/><br/><br/>
 
-                                <button className='button' type='submit'>Submit</button>
+                                <Button type="primary">Submit</Button>
                             </form>
-                        </div>
-                        <div style={{ flex: '0 0 50%'}}>
+                        </Col>
+                        <Col span={12}>
                             <h1>My Tasks</h1>
                             {this.state.tasks.filter(task => task.owner === this.state.userAttributes.sub).map((task,index) => {
                                 return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
@@ -156,8 +162,8 @@ class AppWrapper extends React.Component {
                                     <div style={{ flex: '1 1 auto'}}>{task.description}</div>
                                 </div>
                             })}
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
 
 
                     {this.state.isAdmin 

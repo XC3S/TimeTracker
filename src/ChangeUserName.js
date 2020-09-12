@@ -1,6 +1,7 @@
 import React from 'react';
 import { Auth, DataStore } from 'aws-amplify';
 import { Task } from './models';
+import { Input, Button} from 'antd';
 
 class ChangeUserName extends React.Component {
     constructor(props){
@@ -47,8 +48,8 @@ class ChangeUserName extends React.Component {
             <form onSubmit={(e) => this.formChangeNameSubmit(e)}>
                 <h2>Change User Name</h2>
                 <label>New Name</label><br/>
-                <input type='text' defaultValue={this.props.name} onChange={(e) => this.formChangeName(e)}/><br/><br/>
-                <button type="submit">Submit</button>
+                <Input type='text' defaultValue={this.props.name} onChange={(e) => this.formChangeName(e)}/><br/><br/>
+                <Button type="primary">Submit</Button>
             </form>
         </>
     }

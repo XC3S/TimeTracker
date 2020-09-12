@@ -1,5 +1,6 @@
 import React from 'react';
 import { Auth } from 'aws-amplify';
+import { Input, Button} from 'antd';
 
 class ChangePassword extends React.Component {
     constructor(props){
@@ -37,10 +38,10 @@ class ChangePassword extends React.Component {
             <form onSubmit={(e) => this.formChangePasswordSubmit(e)}>
                 <h2>Change Password</h2>
                 <label>Old Passworld</label><br/>
-                <input type='password' value={this.state.oldPassword} onChange={(e) => this.formChangeOldPassword(e)}/><br/><br/>
+                <Input type='password' value={this.state.oldPassword} onChange={(e) => this.formChangeOldPassword(e)}/><br/><br/>
                 <label>New Password</label><br/>
-                <input type='password' value={this.state.formFullName} onChange={(e) => this.formChangeNewPassword(e)}/><br/><br/>
-                <button type="submit">Submit</button>
+                <Input type='password' value={this.state.formFullName} onChange={(e) => this.formChangeNewPassword(e)}/><br/><br/>
+                <Button type="primary">Submit</Button>
             </form>
         </>
     }
