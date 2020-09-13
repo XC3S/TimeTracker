@@ -6,3 +6,7 @@ To Test User with different Roles. In this Case a simple Time Tracking App with 
 - Auth with multiple roles
 - GraphQL API with Datastore (Offline capable + Realtime syncs)
 - testing Ant Design 
+
+
+### Info
+- you need to add the admin role with your aws console inside your cognito user pool

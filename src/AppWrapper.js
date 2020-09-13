@@ -4,11 +4,18 @@ import { Auth } from 'aws-amplify';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { Task } from './models';
 
+import Navigation from './Navigation.js';
 import ChangePassword from './ChangePassword.js';
 import ChangeUserName from './ChangeUserName.js';
 
 import moment from 'moment';
 import { Calendar, Input, Button, Row, Col } from 'antd';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from "react-router-dom";
 
 class AppWrapper extends React.Component {
 
@@ -124,66 +131,81 @@ class AppWrapper extends React.Component {
                     </div>
                 </>
                 : <>
-                    <h1>Account Info</h1>
-
-                    {Object.keys(this.state.userAttributes).map((keyName,keyIndex) => {
-                        return <div key={keyIndex}><b>{keyName}:</b> {this.state.userAttributes[keyName] + ''}</div>
-                    })}
-
-                    <div><b>isAdmin:</b> { this.state.isAdmin + '' }</div>
-                    <pre>requireNameInput: {this.state.requireNameInput + ''}</pre>
-                    <ChangePassword />
-                    <ChangeUserName name={ this.state.userAttributes.name } onSuccess={() => { 
-                        console.log('onSuccess');
-                        this.fetchUserAttributes();
-                    }}/>
-
-
-                    <Calendar value={this.state.date} />
-
-                    <Row gutter={30}>
-                        <Col span={12}>
-                            <h1>Task Form</h1>
-                            <form onSubmit={(e) => this.formTaskSubmit(e)}>
-                                <label>Task Duration</label><br/>
-                                <Input type='text' value={this.state.formDuration} onChange={(e) => this.formChangeDuration(e)}/><br/><br/>
-
-                                <label>Task Description</label><br/>
-                                <Input type='text' value={this.state.formDescription} onChange={(e) => this.formChangeDescription(e)}/><br/><br/>
-
-                                <Button type="primary">Submit</Button>
-                            </form>
-                        </Col>
-                        <Col span={12}>
-                            <h1>My Tasks</h1>
-                            {this.state.tasks.filter(task => task.owner === this.state.userAttributes.sub).map((task,index) => {
-                                return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
-                                    <div style={{ flex: '0 0 50px'}}>{task.duration}</div>
-                                    <div style={{ flex: '1 1 auto'}}>{task.description}</div>
+                    <Router>
+                        <Navigation></Navigation>
+                        <Switch>
+                            <Route path="/admin">
+                            {this.state.isAdmin 
+                                ? <div>
+                                    <h1>Admin</h1>
+                                    <div style={{ display: 'flex', width: '100%', marginBottom: '15px'}}>
+                                        <div style={{ flex: '0 0 350px'}}><b>User</b></div>
+                                        <div style={{ flex: '0 0 150px'}}><b>Duration</b></div>
+                                        <div style={{ flex: '1 1 auto'}}><b>Description</b></div>
+                                    </div>
+                                    {this.state.tasks.map((task,index) => {
+                                        return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
+                                            <div style={{ flex: '0 0 350px'}}>{task.userName}</div>
+                                            <div style={{ flex: '0 0 150px'}}>{task.duration}</div>
+                                            <div style={{ flex: '1 1 auto'}}>{task.description}</div>
+                                        </div>
+                                    })}
                                 </div>
-                            })}
-                        </Col>
-                    </Row>
+                                : <div></div>
+                            }  
+                            </Route>
+                            <Route path="/profile">
+                                <h1>Account Info</h1>
+
+                                {Object.keys(this.state.userAttributes).map((keyName,keyIndex) => {
+                                    return <div key={keyIndex}><b>{keyName}:</b> {this.state.userAttributes[keyName] + ''}</div>
+                                })}
+
+                                <div><b>isAdmin:</b> { this.state.isAdmin + '' }</div>
+                                <pre>requireNameInput: {this.state.requireNameInput + ''}</pre>
+                                <ChangePassword />
+                                <ChangeUserName name={ this.state.userAttributes.name } onSuccess={() => { 
+                                    console.log('onSuccess');
+                                    this.fetchUserAttributes();
+                                }}/>
+                            </Route>
+                            <Route path="/">
+                                <Calendar value={this.state.date} /> 
+                                <Row gutter={30}>
+                                    <Col span={12}>
+                                        <h1>Task Form</h1>
+                                        <form onSubmit={(e) => this.formTaskSubmit(e)}>
+                                            <label>Task Duration</label><br/>
+                                            <Input type='text' value={this.state.formDuration} onChange={(e) => this.formChangeDuration(e)}/><br/><br/>
+
+                                            <label>Task Description</label><br/>
+                                            <Input type='text' value={this.state.formDescription} onChange={(e) => this.formChangeDescription(e)}/><br/><br/>
+
+                                            <Button type="primary">Submit</Button>
+                                        </form>
+                                    </Col>
+                                    <Col span={12}>
+                                        <h1>My Tasks</h1>
+                                        {this.state.tasks.filter(task => task.owner === this.state.userAttributes.sub).map((task,index) => {
+                                            return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
+                                                <div style={{ flex: '0 0 50px'}}>{task.duration}</div>
+                                                <div style={{ flex: '1 1 auto'}}>{task.description}</div>
+                                            </div>
+                                        })}
+                                    </Col>
+                                </Row>
+                            </Route>
+                        </Switch>
+                    </Router>
+                    
 
 
-                    {this.state.isAdmin 
-                        ? <div>
-                            <h1>Admin</h1>
-                            <div style={{ display: 'flex', width: '100%', marginBottom: '15px'}}>
-                                <div style={{ flex: '0 0 350px'}}><b>User</b></div>
-                                <div style={{ flex: '0 0 150px'}}><b>Duration</b></div>
-                                <div style={{ flex: '1 1 auto'}}><b>Description</b></div>
-                            </div>
-                            {this.state.tasks.map((task,index) => {
-                                return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
-                                    <div style={{ flex: '0 0 350px'}}>{task.userName}</div>
-                                    <div style={{ flex: '0 0 150px'}}>{task.duration}</div>
-                                    <div style={{ flex: '1 1 auto'}}>{task.description}</div>
-                                </div>
-                            })}
-                        </div>
-                        : <div></div>
-                    }
+                    
+
+                    
+
+
+                    
                     
                     
                 </>
