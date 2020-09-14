@@ -8,5 +8,5 @@ type Task @model
   description: String!
   userName: String
   owner: String
-  locked: String
+  date: String!
 }

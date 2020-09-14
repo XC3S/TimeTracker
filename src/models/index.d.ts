@@ -10,7 +10,7 @@ export declare class Task {
   readonly description: string;
   readonly userName?: string;
   readonly owner?: string;
-  readonly locked?: string;
+  readonly date: string;
   constructor(init: ModelInit<Task>);
   static copyOf(source: Task, mutator: (draft: MutableModel<Task>) => MutableModel<Task> | void): Task;
 }

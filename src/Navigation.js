@@ -37,11 +37,12 @@ class Navigation extends React.Component {
                     </Menu.Item>
                     <Menu.Item key="sign-out" icon={<LogoutOutlined />}>Sign Out</Menu.Item>
                 </SubMenu>
-                <Menu.Item key="admin" icon={<AuditOutlined />}>
-                    <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-                        Admin
-                    </a>
-                </Menu.Item>
+                {this.props.isAdmin 
+                    ? <Menu.Item key="admin" icon={<AuditOutlined />}>
+                        <Link to="/admin">Admin</Link>
+                    </Menu.Item>
+                    : <></>
+                }
             </Menu>
         );
     }

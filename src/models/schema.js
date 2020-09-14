@@ -38,11 +38,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "locked": {
-                    "name": "locked",
+                "date": {
+                    "name": "date",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 }
             },
@@ -91,5 +91,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "9174e7078f49ea4536b04c1dffed7516"
+    "version": "e3470a88b61fd7eaed19fad90606c77c"
 };

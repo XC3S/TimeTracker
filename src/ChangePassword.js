@@ -20,7 +20,6 @@ class ChangePassword extends React.Component {
     }
 
     formChangePasswordSubmit = async(event) => {
-        //alert(this.state.formFullName);
         event.preventDefault();
 
         const user = await Auth.currentAuthenticatedUser();

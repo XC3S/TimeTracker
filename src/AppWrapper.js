@@ -7,9 +7,9 @@ import { Task } from './models';
 import Navigation from './Navigation.js';
 import ChangePassword from './ChangePassword.js';
 import ChangeUserName from './ChangeUserName.js';
+import Booking from './Booking.js';
 
-import moment from 'moment';
-import { Calendar, Input, Button, Row, Col } from 'antd';
+import { Input, Button } from 'antd';
 
 import {
     BrowserRouter as Router,
@@ -22,15 +22,11 @@ class AppWrapper extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            text: 'hallo world',
             isAdmin: false,
-            formDuration: '',
-            formDescription: '',
             tasks: [],
             requireNameInput: false,
             formFullName: '',
-            userAttributes: [],
-            date: moment('2017-01-25')
+            userAttributes: []
         };
     }
 
@@ -61,13 +57,7 @@ class AppWrapper extends React.Component {
         })
     }
 
-    formChangeDuration(event){
-        this.setState({ formDuration: event.target.value });
-    }
 
-    formChangeDescription(event){
-        this.setState({ formDescription: event.target.value });
-    }
 
     formChangeFullName(event){
         this.setState({ formFullName: event.target.value });
@@ -80,27 +70,11 @@ class AppWrapper extends React.Component {
             duration: entry.duration,
             description: entry.description,
             owner: entry.owner,
-            userName: entry.userName
+            userName: entry.userName,
+            date: entry.date
         }));
 
         this.setState({ tasks: t })
-    }
-
-    formTaskSubmit = async(event) => {
-        event.preventDefault();
-
-        const task = new Task({
-            duration: this.state.formDuration,
-            description: this.state.formDescription,
-            userName: this.state.userAttributes.name
-        });
-
-        await DataStore.save(task);
-
-        this.setState({
-            formDescription: '',
-            formDuration: ''
-        })
     }
 
     formFullNameSubmit = async(event) => {
@@ -132,7 +106,7 @@ class AppWrapper extends React.Component {
                 </>
                 : <>
                     <Router>
-                        <Navigation></Navigation>
+                        <Navigation isAdmin={this.state.isAdmin}></Navigation>
                         <Switch>
                             <Route path="/admin">
                             {this.state.isAdmin 
@@ -170,44 +144,10 @@ class AppWrapper extends React.Component {
                                 }}/>
                             </Route>
                             <Route path="/">
-                                <Calendar value={this.state.date} /> 
-                                <Row gutter={30}>
-                                    <Col span={12}>
-                                        <h1>Task Form</h1>
-                                        <form onSubmit={(e) => this.formTaskSubmit(e)}>
-                                            <label>Task Duration</label><br/>
-                                            <Input type='text' value={this.state.formDuration} onChange={(e) => this.formChangeDuration(e)}/><br/><br/>
-
-                                            <label>Task Description</label><br/>
-                                            <Input type='text' value={this.state.formDescription} onChange={(e) => this.formChangeDescription(e)}/><br/><br/>
-
-                                            <Button type="primary">Submit</Button>
-                                        </form>
-                                    </Col>
-                                    <Col span={12}>
-                                        <h1>My Tasks</h1>
-                                        {this.state.tasks.filter(task => task.owner === this.state.userAttributes.sub).map((task,index) => {
-                                            return <div key={index} style={{ display: 'flex', width: '100%', borderBottom: '1px solid rgba(0,0,0,0.25)', paddingBottom: '7.5px', marginBottom: '7.5px'}}>
-                                                <div style={{ flex: '0 0 50px'}}>{task.duration}</div>
-                                                <div style={{ flex: '1 1 auto'}}>{task.description}</div>
-                                            </div>
-                                        })}
-                                    </Col>
-                                </Row>
+                                <Booking userAttributes={ this.state.userAttributes } tasks={ this.state.tasks }/>
                             </Route>
                         </Switch>
                     </Router>
-                    
-
-
-                    
-
-                    
-
-
-                    
-                    
-                    
                 </>
             )
         )
